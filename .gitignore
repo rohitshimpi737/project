@@ -1,0 +1,23 @@
+# Backend (Django)
+Backend/myenv/
+Backend/backend/auth_app/__pycache__/
+Backend/backend/auth_app/db.sqlite3
+Backend/backend/auth_app/*.pyc
+Backend/backend/auth_app/migrations/
+Backend/backend/auth_app/.env/
+
+
+Backend/backend/backend/__pycache__/
+# Frontend (React)
+front-end/sensor-monitoring/node_modules/
+front-end/sensor-monitoring/build/
+front-end/sensor-monitoring/.env
+front-end/sensor-monitoring/.eslintrc.cjs
+front-end/sensor-monitoring/eslint.config.js
+
+
+
+# General
+*.log
+.vscode/
+.idea/
