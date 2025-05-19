@@ -1,0 +1,59 @@
+# Backend (Django)
+Backend/myenv/
+Backend/monitoring_system/core/__pycache__/
+Backend/monitoring_system/monitoring_system/__pycache__/
+Backend/monitoring_system/core/db.sqlite3
+Backend/monitoring_system/core/*.pyc
+Backend/monitoring_system/core/migrations/
+Backend/monitoring_system/core/.env/
+
+
+Backend/backend/backend/__pycache__/
+# Frontend (React)
+Frontend/sensor-monitoring/node_modules/
+Frontend/sensor-monitoring/build/
+Frontend/sensor-monitoring/.env
+Frontend/sensor-monitoring/.eslintrc.cjs
+Frontend/sensor-monitoring/eslint.config.js
+
+# General
+*.log
+.vscode/
+.idea/
+
+# === Python & Django ===
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.swp
+*.swo
+
+# Django specific
+*.env
+.env
+.env.*  # for multiple environment files like .env.dev, .env.prod
+
+# media and static files (optional)
+media/
+staticfiles/
+static/
+
+# local settings (if any)
+settings_local.py
+
+# === Virtual Environment ===
+Backend/myenv/
+
+# === IDE/Editor Specific ===
+.vscode/
+.idea/
+
+# === OS-Specific ===
+.DS_Store
+Thumbs.db
