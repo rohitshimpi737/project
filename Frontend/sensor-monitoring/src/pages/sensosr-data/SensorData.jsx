@@ -129,7 +129,7 @@ const SensorData = () => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="bg-white shadow-sm">
+            <div className="bg-white shadow-sm mt-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -157,54 +157,61 @@ const SensorData = () => {
                 </div>
             </div>
 
-<div className="flex-1 max-w-7xl mx-auto px-2 sm:px-2 lg:px-6 py-6">
-                <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
-                    <div className="p-4 border-b border-gray-200">
-                        <div className="flex items-center">
-                            <FiFilter className="h-5 w-5 text-gray-500 mr-2" />
-                            <h3 className="text-lg font-medium text-gray-900">Filters</h3>
-                            {getActiveFilterCount() > 0 && (
-                                <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {getActiveFilterCount()} active
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                    <FilterBar filters={filters} onFilterChange={handleFilterChange} />
-                    <div className="px-4 py-3 bg-gray-50 text-right">
-                        <button
-                            onClick={applyFilters}
-                            disabled={loading}
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                            {loading ? 'Applying...' : 'Apply Filters'}
-                        </button>
-                    </div>
-                </div>
+            <div className="flex flex-col h-full">
+  <div className="bg-white shadow-sm mt-4" >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Filter Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <FiFilter className="h-5 w-5 text-gray-500 mr-2" />
+          <h3 className="text-lg font-medium text-gray-900">Filters</h3>
+          {getActiveFilterCount() > 0 && (
+            <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              {getActiveFilterCount()} active
+            </span>
+          )}
+        </div>
+        <button
+          onClick={applyFilters}
+          disabled={loading}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          {loading ? 'Applying...' : 'Apply Filters'}
+        </button>
+      </div>
 
-                {error && (
-                    <div className="rounded-md bg-red-50 p-4 mb-6">
-                        <div className="flex">
-                            <div className="flex-shrink-0">
-                                <FiAlertCircle className="h-5 w-5 text-red-400" />
-                            </div>
-                            <div className="ml-3">
-                                <h3 className="text-sm font-medium text-red-800">{error}</h3>
-                                <div className="mt-2 text-sm text-red-700">
-                                    <p>Please check your connection and try again.</p>
-                                </div>
-                                <div className="mt-4">
-                                    <button
-                                        onClick={fetchData}
-                                        className="text-sm font-medium text-red-700 hover:text-red-600"
-                                    >
-                                        Retry <span aria-hidden="true">&rarr;</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+      {/* Filter Inputs */}
+      <FilterBar filters={filters} onFilterChange={handleFilterChange} />
+    </div>
+  </div>
+
+  {error && (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="rounded-md bg-red-50 p-4 mb-6">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <FiAlertCircle className="h-5 w-5 text-red-400" />
+          </div>
+          <div className="ml-3">
+            <h3 className="text-sm font-medium text-red-800">{error}</h3>
+            <div className="mt-2 text-sm text-red-700">
+              <p>Please check your connection and try again.</p>
+            </div>
+            <div className="mt-4">
+              <button
+                onClick={fetchData}
+                className="text-sm font-medium text-red-700 hover:text-red-600"
+              >
+                Retry <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+
 
                 {loading ? (
                     <div className="flex justify-center items-center py-12">
@@ -212,8 +219,8 @@ const SensorData = () => {
                     </div>
                 ) : (
                     <>
-                        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-                            <div className="overflow-x-auto">
+                        <div className="bg-white shadow overflow-hidden sm:rounded-lg mt-4">
+                            <div className="overflow-x-auto ">
                                 <SensorDataTable data={data} />
                             </div>
                             <PaginationControls
