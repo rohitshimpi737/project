@@ -88,9 +88,9 @@ const Sidebar = () => {
             Energy
           </Link>
 
-          <Link to="/dashboard/other" className={linkClass(isSubActive("/dashboard/other"))}>
+          <Link to="/dashboard/sensor-data" className={linkClass(isSubActive("/dashboard/other"))}>
             <MoreHorizontal className="w-5 h-5" />
-            Other
+            Sensor Data
           </Link>
         </nav>
       </div>

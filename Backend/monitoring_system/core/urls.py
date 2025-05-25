@@ -8,15 +8,15 @@ from rest_framework_simplejwt.views import TokenRefreshView
 # )
 
 from .views import (
-    AuthViewSet,PlantViewSet,SensorViewSet
+    AuthViewSet,PlantViewSet,SensorViewSet,ItemViewSet,SensorDataViewSet
 )
 
 router = DefaultRouter()
 router.register('plants', PlantViewSet,basename='plants')
 router.register('sensors', SensorViewSet,basename='sensors')
 # router.register('energy', EnergyConsumptionViewSet)
-# router.register('items', ItemViewSet)
-# router.register('sensor-data', SensorDataViewSet)
+router.register('items', ItemViewSet, basename='items')
+router.register('sensor-data', SensorDataViewSet ,basename='sensor-data')
 router.register('auth', AuthViewSet, basename='auth')  # 👈 Auth using ViewSet
 
 urlpatterns = [

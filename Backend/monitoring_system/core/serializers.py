@@ -101,6 +101,29 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class SensorDataSerializer(serializers.ModelSerializer):
+    sensor_name = serializers.CharField(source='sensor.name', read_only=True)
+    plant_name = serializers.CharField(source='sensor.plant.name', read_only=True)
+    item_name = serializers.CharField(source='item.name', read_only=True, default=None)
+
     class Meta:
         model = SensorData
-        fields = '__all__'
+        fields = [
+            'id',
+            'sensor',         # still returns sensor_id
+            'sensor_name',    # 👈 human-readable
+            'plant_name',     # 👈 optional: plant name
+            'item',           # item ID (nullable)
+            'item_name',      # item name (nullable)
+            'timestamp',
+            'items_scanned',
+            'items_processed',
+            'items_discarded',
+            'processed_with_errors',
+            'current_weight_kg',
+            'category_a',
+            'category_b',
+            'category_c',
+            'category_d',
+            'created_at',
+            'updated_at',
+        ]

@@ -29,6 +29,11 @@ import PlantSensors from "./pages/plant/PlantSensors";
 import SensorList from "./pages/sonsor/SensorList";
 import SensorAdd from "./pages/sonsor/SensorAdd";
 import SensorEdit from "./pages/sonsor/SensorEdit";
+import ItemList from "./pages/item/ItemList";
+
+import AddItem from "./pages/item/AddItem";
+import EditItem from "./pages/item/EditItem";
+import SensorData from "./pages/sensosr-data/SensorData";
 
 
 
@@ -86,7 +91,12 @@ const appRouter = createBrowserRouter([
           { path: "sensor/add", element: <SensorAdd /> }, 
           {path: "sensor/:id/edit", element: <SensorEdit /> }, 
 
+          {path:"items", element: <ItemList />},
+          { path: "items/add", element: <AddItem /> },
+          {path:"items/:id/edit", element: <EditItem /> }, 
 
+          // sensor-data
+          {path:"sensor-data/", element :<SensorData/>}
         ],
       },
     ],

@@ -10,10 +10,9 @@ const DashboardLayout = () => {
     <div className="min-h-screen bg-gray-100">
       <Navbar />  {/* Navbar stays at top */}
 
-      {/* Sidebar is fixed, so main content needs padding-left to avoid overlap */}
-      <Sidebar /> 
+      <Sidebar />
 
-        <div className="md:pl-80 pt-[36px] px-4 pb-6">
+        <div className="md:pl-72 pt-[36px] px-4 pb-6">
           {/* Breadcrumb */}
         <nav className="mb-4 text-sm text-gray-600">
           <ul className="flex space-x-2">

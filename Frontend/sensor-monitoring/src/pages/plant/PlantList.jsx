@@ -12,6 +12,7 @@ const PlantTable = () => {
 
   useEffect(() => {
     const fetchPlants = async () => {
+    setLoading(true);
       try {
         const response = await plantApi.getAll();
         setPlants(response.data);

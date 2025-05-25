@@ -107,6 +107,7 @@ class EnergyConsumption(models.Model):
 # Item
 # -----------------------
 class Item(models.Model):
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name="items")
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
