@@ -89,9 +89,17 @@ class SensorSerializer(serializers.ModelSerializer):
 
 
 class EnergyConsumptionSerializer(serializers.ModelSerializer):
+    sensor_name = serializers.CharField(source='sensor.name', read_only=True)
+    plant_name = serializers.CharField(source='plant.name', read_only=True)
+
     class Meta:
         model = EnergyConsumption
-        fields = '__all__'
+        fields = [
+            'id', 'sensor', 'sensor_name',
+            'plant', 'plant_name',
+            'timestamp', 'energy_kwh', 'cost',
+            'created_at', 'updated_at'
+        ]
 
 
 class ItemSerializer(serializers.ModelSerializer):

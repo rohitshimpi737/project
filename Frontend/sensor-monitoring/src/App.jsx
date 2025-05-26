@@ -34,8 +34,12 @@ import ItemList from "./pages/item/ItemList";
 import AddItem from "./pages/item/AddItem";
 import EditItem from "./pages/item/EditItem";
 import SensorData from "./pages/sensosr-data/SensorData";
+<<<<<<< HEAD
 import ViewAnalysis from "./pages/sensosr-data/ViewAnalysis";
 
+=======
+import EnergyDashboard from "./pages/energy/EnergyDashboard";
+>>>>>>> 75bd030c1cacead0271c38d2033aa7bed2bf26f8
 
 
 
@@ -99,10 +103,14 @@ const appRouter = createBrowserRouter([
 
           // sensor-data
           {path:"sensor-data/", element :<SensorData/>},
+<<<<<<< HEAD
           
           {path:"ViewAnalysis", element :<ViewAnalysis/>}
           
           
+=======
+          { path: "energy/", element: <EnergyDashboard /> },
+>>>>>>> 75bd030c1cacead0271c38d2033aa7bed2bf26f8
 
           
         ],
