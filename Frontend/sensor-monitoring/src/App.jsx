@@ -97,6 +97,7 @@ const appRouter = createBrowserRouter([
 
           // sensor-data
           {path:"sensor-data/", element :<SensorData/>}
+          
         ],
       },
     ],

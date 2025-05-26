@@ -79,7 +79,7 @@ const FilterBar = ({ filters, onFilterChange }) => {
 
   return (
     <div className="px-4 py-5 space-y-4">
-      <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div>
           <label htmlFor="plant" className="block text-sm font-medium text-gray-700 mb-1">
             Plant
