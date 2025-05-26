@@ -203,6 +203,7 @@ const SensorData = () => {
                 className="text-sm font-medium text-red-700 hover:text-red-600"
               >
                 Retry <span aria-hidden="true">&rarr;</span>
+                
               </button>
             </div>
           </div>
