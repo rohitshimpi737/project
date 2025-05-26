@@ -10,12 +10,14 @@ from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from datetime import timedelta
 from datetime import datetime
+from django.db.models.functions import TruncDate
+from django.db.models import Sum
 
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password, make_password
 
-from .models import CustomUser, Plant, Sensor,Item, SensorData
+from .models import CustomUser, Plant, Sensor,Item, SensorData,EnergyConsumption
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
@@ -26,6 +28,7 @@ from .serializers import (
     MeSerializer,
     ItemSerializer,
     SensorDataSerializer,
+    EnergyConsumptionSerializer
 )
 
 class AuthViewSet(viewsets.ViewSet):
@@ -322,3 +325,176 @@ class SensorDataViewSet(viewsets.ModelViewSet):
             return Response({"error": "Invalid metric"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data, status=status.HTTP_200_OK)
+
+# class EnergyPagination(PageNumberPagination):
+#     page_size = 20
+#     page_size_query_param = 'page_size'
+#     max_page_size = 100
+
+# class EnergyConsumptionViewSet(viewsets.ModelViewSet):
+#     serializer_class = EnergyConsumptionSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#     pagination_class = EnergyPagination
+
+#     def get_queryset(self):
+#         qs = EnergyConsumption.objects.filter(plant__user=self.request.user)
+#         params = self.request.query_params
+
+#         sensor_id = params.get("sensor")
+#         plant_id = params.get("plant")
+#         start = params.get("start")
+#         end = params.get("end")
+#         date_filter = params.get("date_filter")  # today, week, month
+
+#         now = timezone.now()
+#         if date_filter == "today":
+#             start = now.replace(hour=0, minute=0, second=0)
+#         elif date_filter == "week":
+#             start = now - timedelta(days=7)
+#         elif date_filter == "month":
+#             start = now - timedelta(days=30)
+
+#         if sensor_id:
+#             qs = qs.filter(sensor_id=sensor_id)
+#         if plant_id:
+#             qs = qs.filter(plant_id=plant_id)
+#         if start:
+#             qs = qs.filter(timestamp__gte=start)
+#         if end:
+#             qs = qs.filter(timestamp__lte=end)
+
+#         return qs.order_by("-timestamp")
+
+#     def perform_create(self, serializer):
+#         sensor_id = self.request.data.get("sensor")
+#         plant_id = self.request.data.get("plant")
+
+#         if not (sensor_id and plant_id):
+#             raise ValidationError({"error": "Both sensor and plant are required."})
+
+#         try:
+#             sensor = Sensor.objects.get(id=sensor_id, plant__user=self.request.user)
+#             plant = Plant.objects.get(id=plant_id, user=self.request.user)
+#         except (Sensor.DoesNotExist, Plant.DoesNotExist):
+#             raise ValidationError({"error": "Invalid sensor or plant for this user."})
+
+#         serializer.save(sensor=sensor, plant=plant)
+
+#     @action(detail=False, methods=['get'], url_path='metrics')
+#     def get_metrics(self, request):
+#         metric_type = request.query_params.get("metric")
+#         qs = self.get_queryset()
+
+#         if metric_type == "daily":
+#             data = qs.values("timestamp__date").annotate(
+#                 total_kwh=sum("energy_kwh"), total_cost=sum("cost")
+#             ).order_by("timestamp__date")
+#         elif metric_type == "sensor-cost":
+#             data = qs.values("sensor__name").annotate(
+#                 total_cost=sum("cost")
+#             ).order_by("-total_cost")
+#         else:
+#             return Response({"error": "Invalid metric"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(data)
+    
+
+
+class EnergyPagination(PageNumberPagination):
+    page_size = 10  # Changed to match frontend default
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+class EnergyConsumptionViewSet(viewsets.ModelViewSet):
+    serializer_class = EnergyConsumptionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = EnergyPagination
+
+    def get_queryset(self):
+        qs = EnergyConsumption.objects.filter(plant__user=self.request.user)
+        params = self.request.query_params
+
+        sensor_id = params.get("sensor")
+        plant_id = params.get("plant")
+        start_date = params.get("start_date")  # Changed to match frontend
+        end_date = params.get("end_date")      # Changed to match frontend
+        date_filter = params.get("date_filter")
+
+        now = timezone.now()
+        if date_filter == "today":
+            start_date = now.replace(hour=0, minute=0, second=0, microsecond=0).date()
+            end_date = now.date()
+        elif date_filter == "week":
+            start_date = (now - timedelta(days=now.weekday())).date()  # Start of current week
+            end_date = now.date()
+        elif date_filter == "month":
+            start_date = now.replace(day=1).date()  # Start of current month
+            end_date = now.date()
+
+        if sensor_id:
+            qs = qs.filter(sensor_id=sensor_id)
+        if plant_id:
+            qs = qs.filter(plant_id=plant_id)
+        if start_date:
+            qs = qs.filter(timestamp__date__gte=start_date)
+        if end_date:
+            qs = qs.filter(timestamp__date__lte=end_date)
+
+        return qs.order_by("-timestamp")
+
+    def perform_create(self, serializer):
+        sensor_id = self.request.data.get("sensor")
+        plant_id = self.request.data.get("plant")
+
+        if not (sensor_id and plant_id):
+            raise ValidationError({"error": "Both sensor and plant are required."})
+
+        try:
+            sensor = Sensor.objects.get(id=sensor_id, plant__user=self.request.user)
+            plant = Plant.objects.get(id=plant_id, user=self.request.user)
+        except (Sensor.DoesNotExist, Plant.DoesNotExist):
+            raise ValidationError({"error": "Invalid sensor or plant for this user."})
+
+        serializer.save(sensor=sensor, plant=plant)
+
+    @action(detail=False, methods=['get'])
+    def metrics(self, request):
+        metric_type = request.query_params.get("metric")
+        if not metric_type:
+            return Response({"error": "Metric parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        qs = self.get_queryset()
+        
+        try:
+            if metric_type == "daily":
+                data = qs.annotate(
+                    date=TruncDate('timestamp')
+                ).values('date').annotate(
+                    energy_kwh=Sum('energy_kwh'),
+                    cost_inr=Sum('cost')
+                ).order_by('date')
+                
+                # Convert to proper format for frontend
+                formatted_data = [{
+                    'date': item['date'].strftime('%Y-%m-%d'),
+                    'energy_kwh': float(item['energy_kwh'] or 0),
+                    'cost_inr': float(item['cost_inr'] or 0)
+                } for item in data]
+                
+            elif metric_type == "sensor-cost":
+                data = qs.values('sensor__name').annotate(
+                    total_cost=Sum('cost')
+                ).order_by('-total_cost')
+                
+                formatted_data = [{
+                    'sensor_name': item['sensor__name'],
+                    'total_cost': float(item['total_cost'] or 0)
+                } for item in data]
+                
+            else:
+                return Response({"error": "Invalid metric type"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response(formatted_data)
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)   

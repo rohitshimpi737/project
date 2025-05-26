@@ -34,6 +34,7 @@ import ItemList from "./pages/item/ItemList";
 import AddItem from "./pages/item/AddItem";
 import EditItem from "./pages/item/EditItem";
 import SensorData from "./pages/sensosr-data/SensorData";
+import EnergyDashboard from "./pages/energy/EnergyDashboard";
 
 
 
@@ -96,7 +97,9 @@ const appRouter = createBrowserRouter([
           {path:"items/:id/edit", element: <EditItem /> }, 
 
           // sensor-data
-          {path:"sensor-data/", element :<SensorData/>}
+          {path:"sensor-data/", element :<SensorData/>},
+          { path: "energy/", element: <EnergyDashboard /> },
+
           
         ],
       },
