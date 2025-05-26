@@ -5,6 +5,7 @@ import SensorDataTable from "./SensorDataTable";
 import PaginationControls from "./PaginationControls";
 import sensorDataApi from "../../api/sensorDataApi";
 import LoadingSpinner from "./LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 
 const SensorData = () => {
@@ -12,6 +13,7 @@ const SensorData = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
+    const navigate = useNavigate();
 
     const [filters, setFilters] = useState({
         plant: "",
@@ -144,6 +146,7 @@ const SensorData = () => {
                                     Last updated: {lastUpdated.toLocaleTimeString()}
                                 </span>
                             )}
+
                             <button
                                 onClick={handleRefresh}
                                 disabled={loading}
@@ -151,6 +154,15 @@ const SensorData = () => {
                             >
                                 <FiRefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                                 Refresh
+                            </button>
+
+                            <button
+                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => navigate('/dashboard/ViewAnalysis',{ state: { data } })}
+                               >
+                                 View Analysis
                             </button>
                         </div>
                     </div>
@@ -203,7 +215,7 @@ const SensorData = () => {
                 className="text-sm font-medium text-red-700 hover:text-red-600"
               >
                 Retry <span aria-hidden="true">&rarr;</span>
-                
+
               </button>
             </div>
           </div>
